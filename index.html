@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&family=Big+Shoulders+Inline+Text:wght@800&display=swap" rel="stylesheet"> 
+
+        <link rel="stylesheet" href="style.css" />
+        <title>Salamandre Art</title>
+    </head>
+
+    <body onresize="computeGrid()">
+        <main id="main">
+            <header id="header">
+
+                <div class="title"><h1>Salamandre Art</h1></div>
+
+                <ul>
+                    <li class="N"><a href="?">Gallery</a></li>
+                    <li class="N"><a href="?">Commissions</a></li>
+                    <li class="N"><a href="?">Blog</a></li>
+                </ul>
+
+                <div class="line"></div>
+            </header>
+            
+            <div id="corps">
+                <img src="isa_couple.png" alt="" width="300">
+                <img src="isa_ibiscus.png" alt="" width="300">
+                <img src="gardiens_nuit.png" alt="" width="300">
+                <img src="ojamajo_manon.jpg" alt="" width="300">
+                <img src="laura_rogne.png" alt="" width="300">
+                <img src="alice.jpg" alt="" width="300">
+                <img src="sayaka_kyoko.png" alt="" width="300">
+                <img src="scared_sumi.png" alt="" width="300">
+                <img src="nurse_mouse.jpg" alt="" width="300">
+                <img src="salamandre_winner.png" alt="" width="300">
+                <img src="mindless.jpg" alt="" width="300">
+                <img src="axy.png" alt="" width="300">
+                <img src="something_i_hate.png" alt="" width="300">
+                <img src="sumi_lolita.jpg" alt="" width="300">
+                <img src="red-riding_hood.jpg" alt="" width="300">
+                <img src="pencil_bunny.jpg" alt="" width="300">
+                <img src="sumimasen_yellow.png" alt="" width="300">
+                <img src="saber_rin.jpg" alt="" width="300">
+                <img src="chibi_alys.png" alt="" width="300">
+                <img src="glasses_girl.jpg" alt="" width="300">
+                <img src="madoka_homura.jpg" alt="" width="300">
+                <img src="leora_sit.png" alt="" width="300">
+                <img src="madoka_homura_zoom.jpg" alt="" width="300">
+                <img src="nightsky.png" alt="" width="300">
+                <img src="mirror_mountains.png" alt="" width="300">
+            </div>
+
+        </main>
+
+        <footer id="footer">
+            <div class="line"></div>
+            
+            <h2>Follow me on</h2>
+
+            <ul>
+                <li>Instagram :</li>
+                <li>Facebook :</li>
+            </ul>
+        </footer>
+
+        <script>
+            function initHeights(n) {
+                const heights = [];
+                for (let i = 0; i < n; i++) {
+                    heights.push(0);
+                }
+                return heights;
+            }
+
+            function findMinHeight(heights) {
+                let index = 0;
+                let height = heights[0];
+                for (let i = 1; i < heights.length; i++) {
+                    if (heights[i] < height) {
+                        height = heights[i];
+                        index = i;
+                    }
+                }
+                return { index, height };
+            }
+
+            function findMaxHeight(heights) {
+                let height = heights[0];
+                for (let i = 1; i < heights.length; i++) {
+                    if (heights[i] > height) {
+                        height = heights[i];
+                    }
+                }
+                return height;
+            }
+
+            function moveImage(node, shift, index, width, height) {
+                node.style.left = `${shift + index * width}px`;
+                node.style.top = `${height}px`;
+                return node.offsetHeight + height;
+            }
+
+            function setNewHeight(index, heights, height) {
+                heights[index] = height;
+            }
+
+            function computeGrid() {
+                const corps = document.getElementById("corps");
+                corps.style.position = "relative";
+                const corpsWidth = corps.offsetWidth;
+                const imageNodes = corps.children;
+                const imageWidth = imageNodes[0].offsetWidth;
+                
+                const columnNumber = Math.floor(corpsWidth / imageWidth);
+
+                const shift = (corpsWidth - imageWidth * columnNumber) / 2
+                const heights = initHeights(columnNumber);
+                
+                for (const node of imageNodes) {
+                    node.style.position = "absolute";
+                    const { index, height } = findMinHeight(heights);
+                    const newHeight = moveImage(node, shift, index, imageWidth, height);
+                    setNewHeight(index, heights, newHeight);
+                }
+
+                const footer = document.getElementById("footer");
+                const header = document.getElementById("header");
+                const main = document.getElementById("main");
+                const height = findMaxHeight(heights);
+                footer.style.marginTop = `${header.offsetHeight + height - main.offsetHeight}px`;
+            }
+        </script>
+
+        <script>
+            computeGrid();            
+        </script>
+
+    </body>
+
+</html>
